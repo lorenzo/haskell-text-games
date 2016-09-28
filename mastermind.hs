@@ -97,8 +97,8 @@ parseWord word
   | word == "blue" || word == "b" = Just Blue
   | word == "green" || word == "g" = Just Green
   | word == "red" || word == "r" = Just Red
-  | word == "Yellow" || word == "y" = Just Yellow
-  | word == "Orange" || word == "o" = Just Orange
+  | word == "yellow" || word == "y" = Just Yellow
+  | word == "orange" || word == "o" = Just Orange
   | otherwise = Nothing
 
 
