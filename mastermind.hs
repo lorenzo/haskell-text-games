@@ -1,4 +1,5 @@
 import Data.Char (toLower)
+import Data.Maybe (catMaybes)
 import System.Random
 
 data Peg
@@ -56,12 +57,15 @@ calculateFeedback (MasterCode g1 g2 g3 g4) (MasterCode m1 m2 m3 m4) =
       [m1, m2, m3, m4]
 
     rightPosition =
-      [ CorrectPosition | x <- zipWith (==) guessList codeList, x ]
+      zipWith (\a b -> if a == b then Just CorrectPosition else Nothing ) guessList codeList
+
+    taken =
+      zip codeList rightPosition
 
     rightColor =
-      [ CorrectColor | (x, y) <- zip guessList codeList, x `elem` codeList,  x /= y]
+      [ Just CorrectColor | (x, y) <- zip guessList codeList, (x, Nothing) `elem` taken, x /= y]
   in
-    rightPosition ++ rightColor
+    catMaybes $ rightPosition ++ rightColor
 
 
 parseCode :: String -> Maybe MasterCode
@@ -107,6 +111,7 @@ printFeedback feedback =
   let
     veryGood =
       length $ filter (CorrectPosition ==) feedback
+
     almostThere =
       length $ filter (CorrectColor ==) feedback
   in
